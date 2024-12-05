@@ -160,14 +160,13 @@ export default function Class() {
               <thead className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
                 <tr>
                   {[
+                    'stt',
                     'class name',
                     'number',
                     'start date',
                     'end date',
                     'subject credit',
                     'total practice',
-                    'time line',
-                    '',
                   ].map((el) => (
                     <th key={el} className="border-b border-blue-gray-50 py-3 px-5 text-left">
                       <Typography
@@ -193,6 +192,13 @@ export default function Class() {
                         className="hover:opacity-60 cursor-pointer"
                         onClick={() => navigate('123')}
                       >
+                        <td className={className}>
+                          <div className="flex items-center gap-4">
+                            <Typography variant="small" color="blue-gray" className="font-bold">
+                              {key + 1}
+                            </Typography>
+                          </div>
+                        </td>
                         <td className={className}>
                           <div className="flex items-center gap-4">
                             <Typography variant="small" color="blue-gray" className="font-bold">
@@ -240,35 +246,6 @@ export default function Class() {
                           >
                             {`${practice} exerrices`}
                           </Typography>
-                        </td>
-                        <td className={className}>
-                          <div className="w-10/12">
-                            <Typography
-                              variant="small"
-                              className="mb-1 block text-xs font-medium text-blue-gray-600"
-                            >
-                              {completion}%
-                            </Typography>
-                            <Progress
-                              value={completion}
-                              variant="gradient"
-                              color={completion === 100 ? 'green' : 'gray'}
-                              className="h-1"
-                            />
-                          </div>
-                        </td>
-                        <td className={`${className} min-w-[110px] max-w-[40px]`}>
-                          <IconButton
-                            variant="text"
-                            className="rounded-full"
-                            onClick={(event) => {
-                              event.preventDefault();
-                              event.stopPropagation();
-                              setDele(true);
-                            }}
-                          >
-                            <TrashIcon strokeWidth={2} className="h-5 w-5 text-red-600" />
-                          </IconButton>
                         </td>
                       </tr>
                     );

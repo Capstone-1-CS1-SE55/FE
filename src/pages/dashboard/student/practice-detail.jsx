@@ -158,14 +158,6 @@ export default function PracticeDetail() {
               ))}
             </div>
           </CardBody>
-          <Button
-            variant="gradient"
-            color="green"
-            className="ml-auto mr-4 mb-4"
-            onClick={() => setConfirm(true)}
-          >
-            Submit
-          </Button>
         </Card>
         <div className="sticky top-0 max-h-fit">
           <div
@@ -182,6 +174,20 @@ export default function PracticeDetail() {
             <ClockCounter
               targetDate={new Date(new Date().getTime() + 120 * 60 * 1000)}
             ></ClockCounter>
+          </div>
+
+          <div className="absolute right-0 top-[160px]">
+            <Button variant="gradient" className="ml-auto mr-4 mb-4">
+              Save
+            </Button>
+            <Button
+              variant="gradient"
+              color="green"
+              className="ml-auto mr-4 mb-4"
+              onClick={() => setConfirm(true)}
+            >
+              Submit
+            </Button>
           </div>
         </div>
       </div>

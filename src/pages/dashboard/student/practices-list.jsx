@@ -18,46 +18,56 @@ import { useNavigate } from 'react-router-dom';
 
 const practiceTableData = [
   {
+    className: 'Class 1',
     practiceName: 'Practice 1',
     status: 'ended',
-    startDate: '12/12/2021',
-    endDate: '12/12/2021',
+    submittionTime: '12/12/2021 - 10:00 AM',
+    startDate: '12/12/2021 - 9:00 AM',
+    endDate: '12/12/2021 - 10:00 AM',
     participants: 30,
     numberOfQuestions: 10,
     score: '9/10',
   },
   {
+    className: 'Class 2',
     practiceName: 'Practice 2',
     status: 'progress',
-    startDate: '12/12/2021',
-    endDate: '12/12/2021',
+    submittionTime: '12/12/2021 - 8:45 PM',
+    startDate: '12/12/2021 - 8:00 PM',
+    endDate: '12/12/2021 - 9:00 PM',
     participants: 30,
     numberOfQuestions: 10,
     score: '_/10',
   },
   {
+    className: 'Class 3',
     practiceName: 'Practice 3',
     status: 'progress',
-    startDate: '12/12/2021',
-    endDate: '12/12/2021',
+    submittionTime: '12/12/2021 - 7:50 AM',
+    startDate: '12/12/2021 - 7:15 AM',
+    endDate: '12/12/2021 - 8:00 AM',
     participants: 30,
     numberOfQuestions: 10,
     score: '_/10',
   },
   {
+    className: 'Class 4',
     practiceName: 'Practice 4',
     status: 'progress',
-    startDate: '12/12/2021',
-    endDate: '12/12/2021',
+    submittionTime: '12/12/2021 - 4:50 PM',
+    startDate: '12/12/2021 - 3:15 PM',
+    endDate: '12/12/2021 - 5:00 PM',
     participants: 30,
     numberOfQuestions: 10,
     score: '_/10',
   },
   {
+    className: 'Class 5',
     practiceName: 'Practice 5',
     status: 'progress',
-    startDate: '12/12/2021',
-    endDate: '12/12/2021',
+    submittionTime: '12/12/2021 - 10:00 AM',
+    startDate: '12/12/2021 - 9:00 AM',
+    endDate: '12/12/2021 - 11:00 AM',
     participants: 30,
     numberOfQuestions: 10,
     score: '_/10',
@@ -122,8 +132,11 @@ export default function PracticesList() {
               <thead className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
                 <tr>
                   {[
+                    'stt',
+                    'class name',
                     'practice name',
                     'status',
+                    'submittion time',
                     'start date',
                     'end date',
                     'participants',
@@ -146,8 +159,10 @@ export default function PracticesList() {
                 {practiceTableData.map(
                   (
                     {
+                      className: yourClassName,
                       practiceName,
                       status,
+                      submittionTime,
                       startDate,
                       endDate,
                       participants,
@@ -164,6 +179,20 @@ export default function PracticesList() {
                       <tr key={practiceName} className="hover:opacity-70 cursor-pointer">
                         <td className={className}>
                           <Typography variant="small" color="blue-gray" className="font-semibold">
+                            {key + 1}
+                          </Typography>
+                        </td>
+                        <td className={className} onClick={() => navigate('/dashboard/class/123')}>
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-semibold hover:underline hover:text-green-600 transition-all"
+                          >
+                            {yourClassName}
+                          </Typography>
+                        </td>
+                        <td className={className}>
+                          <Typography variant="small" color="blue-gray" className="font-semibold">
                             {practiceName}
                           </Typography>
                         </td>
@@ -175,6 +204,11 @@ export default function PracticesList() {
                             color={status === 'ended' ? 'red' : 'green'}
                             className="py-0.5 px-2 text-[11px] font-medium w-fit capitalize"
                           />
+                        </td>
+                        <td className={className}>
+                          <Typography className="text-xs font-semibold text-blue-gray-600">
+                            {submittionTime}
+                          </Typography>
                         </td>
                         <td className={className}>
                           <Typography className="text-xs font-semibold text-blue-gray-600">

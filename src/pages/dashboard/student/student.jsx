@@ -13,7 +13,7 @@ import {
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const practiceTableData = [
+const memberTableData = [
   {
     img: '/img/team-2.jpeg',
     name: 'John Michael',
@@ -88,6 +88,64 @@ const practiceTableData = [
   },
 ];
 
+const practiceTableData = [
+  {
+    className: 'Class 1',
+    practiceName: 'Practice 1',
+    status: 'ended',
+    submittionTime: '12/12/2021 - 10:00 AM',
+    startDate: '12/12/2021 - 9:00 AM',
+    endDate: '12/12/2021 - 10:00 AM',
+    participants: 30,
+    numberOfQuestions: 10,
+    score: '9/10',
+  },
+  {
+    className: 'Class 2',
+    practiceName: 'Practice 2',
+    status: 'progress',
+    submittionTime: '12/12/2021 - 8:45 PM',
+    startDate: '12/12/2021 - 8:00 PM',
+    endDate: '12/12/2021 - 9:00 PM',
+    participants: 30,
+    numberOfQuestions: 10,
+    score: '_/10',
+  },
+  {
+    className: 'Class 3',
+    practiceName: 'Practice 3',
+    status: 'progress',
+    submittionTime: '12/12/2021 - 7:50 AM',
+    startDate: '12/12/2021 - 7:15 AM',
+    endDate: '12/12/2021 - 8:00 AM',
+    participants: 30,
+    numberOfQuestions: 10,
+    score: '_/10',
+  },
+  {
+    className: 'Class 4',
+    practiceName: 'Practice 4',
+    status: 'progress',
+    submittionTime: '12/12/2021 - 4:50 PM',
+    startDate: '12/12/2021 - 3:15 PM',
+    endDate: '12/12/2021 - 5:00 PM',
+    participants: 30,
+    numberOfQuestions: 10,
+    score: '_/10',
+  },
+  {
+    className: 'Class 5',
+    practiceName: 'Practice 5',
+    status: 'progress',
+    submittionTime: '12/12/2021 - 10:00 AM',
+    startDate: '12/12/2021 - 9:00 AM',
+    endDate: '12/12/2021 - 11:00 AM',
+    participants: 30,
+    numberOfQuestions: 10,
+    score: '_/10',
+  },
+];
+
 export default function Student() {
   const [invite, setInvite] = React.useState(false);
   const [dele, setDele] = React.useState(false);
@@ -128,110 +186,212 @@ export default function Student() {
         </div>
       </div>
 
-      <Card className="mt-12">
-        <CardHeader variant="gradient" color="gray" className="mb-8 p-6">
-          <Typography variant="h6" color="white">
-            List of member
-          </Typography>
-        </CardHeader>
-        <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
-          <table className="w-full min-w-[640px] table-auto">
-            <thead className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-              <tr>
-                {['stt', 'member name', 'role', 'gender'].map((el) => (
-                  <th key={el} className="border-b border-blue-gray-50 py-3 px-5 text-left">
-                    <Typography
-                      variant="small"
-                      className="text-[11px] font-bold uppercase text-blue-gray-400"
-                    >
-                      {el}
-                    </Typography>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {practiceTableData.map(
-                ({ img, name, email, gender, studentCode, phone, role, address }, key) => {
+      <div className="grid gap-12 px-4 sm:grid-cols-1  lg:grid-cols-[2fr_minmax(660px,1fr)]">
+        <Card className="mt-12">
+          <CardHeader variant="gradient" color="gray" className="mb-8 p-6">
+            <Typography variant="h6" color="white">
+              List of member
+            </Typography>
+          </CardHeader>
+          <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
+            <table className="w-full min-w-[640px] table-auto">
+              <thead className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
+                <tr>
+                  {['stt', 'member name', 'role', 'gender'].map((el) => (
+                    <th key={el} className="border-b border-blue-gray-50 py-3 px-5 text-left">
+                      <Typography
+                        variant="small"
+                        className="text-[11px] font-bold uppercase text-blue-gray-400"
+                      >
+                        {el}
+                      </Typography>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {memberTableData.map(
+                  ({ img, name, email, gender, studentCode, phone, role, address }, key) => {
+                    const className = `py-3 px-5 ${
+                      key === memberTableData.length - 1 ? '' : 'border-b border-blue-gray-50'
+                    }`;
+
+                    return (
+                      <tr key={name} className="hover:opacity-70 cursor-pointer">
+                        <td className={className}>
+                          <Typography className="text-xs font-semibold text-blue-gray-600 pl-[6px]">
+                            {key + 1}
+                          </Typography>
+                        </td>
+                        <td className={className}>
+                          <div className="flex items-center gap-4">
+                            <Avatar src={img} alt={name} size="sm" variant="rounded" />
+                            <div>
+                              <Typography
+                                variant="small"
+                                color="blue-gray"
+                                className="font-semibold"
+                              >
+                                {name}
+                              </Typography>
+                              <Typography className="text-xs font-normal text-blue-gray-500">
+                                {email}
+                              </Typography>
+                            </div>
+                          </div>
+                        </td>
+
+                        <td className={className}>
+                          <Chip
+                            size="sm"
+                            variant="ghost"
+                            value={role}
+                            color={role === 'member' ? 'amber' : 'green'}
+                            className="py-0.5 px-2 text-[11px] font-medium w-fit capitalize"
+                          />
+                        </td>
+
+                        <td className={className}>
+                          <Typography className="text-xs font-semibold text-blue-gray-600">
+                            {gender}
+                          </Typography>
+                        </td>
+                      </tr>
+                    );
+                  }
+                )}
+              </tbody>
+            </table>
+          </CardBody>
+          <CardFooter className="flex items-center justify-end border-t border-blue-gray-50 p-4 gap-x-2">
+            <IconButton variant="outlined" size="sm">
+              <ArrowLeftIcon className="w-full h-full" />
+            </IconButton>
+            <div className="flex items-center gap-2">
+              <IconButton variant="outlined" size="sm">
+                1
+              </IconButton>
+              <IconButton variant="text" size="sm">
+                2
+              </IconButton>
+              <IconButton variant="text" size="sm">
+                3
+              </IconButton>
+              <IconButton variant="text" size="sm">
+                ...
+              </IconButton>
+              <IconButton variant="text" size="sm">
+                8
+              </IconButton>
+              <IconButton variant="text" size="sm">
+                9
+              </IconButton>
+              <IconButton variant="text" size="sm">
+                10
+              </IconButton>
+            </div>
+            <IconButton variant="outlined" size="sm">
+              <ArrowRightIcon className="w-full h-full" />
+            </IconButton>
+          </CardFooter>
+        </Card>
+
+        <Card className="mt-12">
+          <CardHeader variant="gradient" color="gray" className="mb-8 p-6">
+            <Typography variant="h6" color="white">
+              List of practice
+            </Typography>
+          </CardHeader>
+          <CardBody className="overflow-x-scroll px-0 pt-0 pb-2 h-full">
+            <table className="w-full min-w-[640px] table-auto">
+              <thead className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
+                <tr>
+                  {['stt', 'practice name', 'start date', 'end date'].map((el) => (
+                    <th key={el} className="border-b border-blue-gray-50 py-3 px-5 text-left">
+                      <Typography
+                        variant="small"
+                        className="text-[11px] font-bold uppercase text-blue-gray-400"
+                      >
+                        {el}
+                      </Typography>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {practiceTableData.map(({ practiceName, startDate, endDate }, key) => {
                   const className = `py-3 px-5 ${
-                    key === practiceTableData.length - 1 ? '' : 'border-b border-blue-gray-50'
+                    key === memberTableData.length - 1 ? '' : 'border-b border-blue-gray-50'
                   }`;
 
                   return (
-                    <tr key={name} className="hover:opacity-70 cursor-pointer">
+                    <tr
+                      key={key}
+                      className="hover:opacity-70 cursor-pointer"
+                      onClick={() => navigate('/dashboard/practices/Practice 2013')}
+                    >
                       <td className={className}>
                         <Typography className="text-xs font-semibold text-blue-gray-600 pl-[6px]">
                           {key + 1}
                         </Typography>
                       </td>
+
                       <td className={className}>
-                        <div className="flex items-center gap-4">
-                          <Avatar src={img} alt={name} size="sm" variant="rounded" />
-                          <div>
-                            <Typography variant="small" color="blue-gray" className="font-semibold">
-                              {name}
-                            </Typography>
-                            <Typography className="text-xs font-normal text-blue-gray-500">
-                              {email}
-                            </Typography>
-                          </div>
-                        </div>
+                        <Typography className="text-xs font-semibold text-blue-gray-600 pl-[6px]">
+                          {practiceName}
+                        </Typography>
                       </td>
 
                       <td className={className}>
-                        <Chip
-                          size="sm"
-                          variant="ghost"
-                          value={role}
-                          color={role === 'member' ? 'amber' : 'green'}
-                          className="py-0.5 px-2 text-[11px] font-medium w-fit capitalize"
-                        />
+                        <Typography className="text-xs font-semibold text-blue-gray-600 pl-[6px]">
+                          {startDate}
+                        </Typography>
                       </td>
 
                       <td className={className}>
-                        <Typography className="text-xs font-semibold text-blue-gray-600">
-                          {gender}
+                        <Typography className="text-xs font-semibold text-blue-gray-600 pl-[6px]">
+                          {endDate}
                         </Typography>
                       </td>
                     </tr>
                   );
-                }
-              )}
-            </tbody>
-          </table>
-        </CardBody>
-        <CardFooter className="flex items-center justify-end border-t border-blue-gray-50 p-4 gap-x-2">
-          <IconButton variant="outlined" size="sm">
-            <ArrowLeftIcon className="w-full h-full" />
-          </IconButton>
-          <div className="flex items-center gap-2">
+                })}
+              </tbody>
+            </table>
+          </CardBody>
+          <CardFooter className="flex items-center justify-end border-t border-blue-gray-50 p-4 gap-x-2">
             <IconButton variant="outlined" size="sm">
-              1
+              <ArrowLeftIcon className="w-full h-full" />
             </IconButton>
-            <IconButton variant="text" size="sm">
-              2
+            <div className="flex items-center gap-2">
+              <IconButton variant="outlined" size="sm">
+                1
+              </IconButton>
+              <IconButton variant="text" size="sm">
+                2
+              </IconButton>
+              <IconButton variant="text" size="sm">
+                3
+              </IconButton>
+              <IconButton variant="text" size="sm">
+                ...
+              </IconButton>
+              <IconButton variant="text" size="sm">
+                8
+              </IconButton>
+              <IconButton variant="text" size="sm">
+                9
+              </IconButton>
+              <IconButton variant="text" size="sm">
+                10
+              </IconButton>
+            </div>
+            <IconButton variant="outlined" size="sm">
+              <ArrowRightIcon className="w-full h-full" />
             </IconButton>
-            <IconButton variant="text" size="sm">
-              3
-            </IconButton>
-            <IconButton variant="text" size="sm">
-              ...
-            </IconButton>
-            <IconButton variant="text" size="sm">
-              8
-            </IconButton>
-            <IconButton variant="text" size="sm">
-              9
-            </IconButton>
-            <IconButton variant="text" size="sm">
-              10
-            </IconButton>
-          </div>
-          <IconButton variant="outlined" size="sm">
-            <ArrowRightIcon className="w-full h-full" />
-          </IconButton>
-        </CardFooter>
-      </Card>
+          </CardFooter>
+        </Card>
+      </div>
     </>
   );
 }
