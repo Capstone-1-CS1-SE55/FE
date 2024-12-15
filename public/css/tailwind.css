@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.input-score{
+    min-width: 120px!important;    
+    width: 120px!important;    
+}
