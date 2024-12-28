@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import { Cog6ToothIcon } from '@heroicons/react/24/solid';
 import { IconButton } from '@material-tailwind/react';
 import { Sidenav, DashboardNavbar, Configurator, Footer } from '@/widgets/layout';
-import teacherRoutes, { studentRoutes } from '@/pages/dashboard/routes';
+import teacherRoutes, { adminRoutes, studentRoutes } from '@/pages/dashboard/routes';
 import { useMaterialTailwindController, setOpenConfigurator } from '@/context';
 import PracticeDetail from '@/pages/dashboard/teacher/practice-detail';
 import Student from '@/pages/dashboard/teacher/student';
@@ -14,14 +14,22 @@ import { useState } from 'react';
 export function Dashboard() {
   const [controller, dispatch] = useMaterialTailwindController();
   const { sidenavType } = controller;
-  const [role, setRole] = useState('student');
+  const [role, setRole] = useState('admin');
 
   return (
     <div className="min-h-screen bg-blue-gray-50/50">
       <Sidenav
-        routes={role === 'teacher' ? teacherRoutes : studentRoutes}
+        routes={
+          role === 'teacher' ? teacherRoutes : role === 'student' ? studentRoutes : adminRoutes
+        }
         brandImg={sidenavType === 'dark' ? '/img/logo-ct.png' : '/img/logo-ct-dark.png'}
-        brandName={role === 'teacher' ? 'Welcome Teacher' : 'Welcome Student'}
+        brandName={
+          role === 'teacher'
+            ? 'Welcome Teacher'
+            : role === 'student'
+            ? 'Welcome Student'
+            : 'Welcome Admin'
+        }
         role={role}
       />
       <div className="p-4 xl:ml-80">
@@ -37,7 +45,12 @@ export function Dashboard() {
           <Cog6ToothIcon className="h-5 w-5" />
         </IconButton>
         <Routes>
-          {(role === 'teacher' ? teacherRoutes : studentRoutes).map(
+          {(role === 'teacher'
+            ? teacherRoutes
+            : role === 'student'
+            ? studentRoutes
+            : adminRoutes
+          ).map(
             ({ layout, pages }) =>
               layout === 'dashboard' &&
               pages.map(({ path, element }) => <Route exact path={path} element={element} />)
@@ -61,7 +74,7 @@ export function Dashboard() {
           )}
         </Routes>
         {/* <div className="text-blue-gray-600">
-          <Footer />
+        <Footer />
         </div> */}
       </div>
     </div>
