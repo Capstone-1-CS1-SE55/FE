@@ -149,15 +149,15 @@ export function AddProductDialog({ open, handleClose, student }) {
             <div className="flex gap-10">
               <Radio
                   name="gender"
-                  label="Nam"
-                  checked={student.gender === 'Nam'}
+                  label="Male"
+                  checked={student.gender === 'Male'}
                   readOnly
                   disabled
               />
               <Radio
                   name="gender"
-                  label="Nữ"
-                  checked={student.gender === 'Nữ'}
+                  label="Female"
+                  checked={student.gender === 'Female'}
                   readOnly
                   disabled
               />

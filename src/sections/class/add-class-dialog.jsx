@@ -78,22 +78,18 @@ export function AddClassDialog({open, handleClose, pageClassrooms}) {
                 setCurrentEmail('');
                 setClassName('');
                 setEmail([])
-                setTimeout(() => {
                     Swal.fire({
                         icon: "success",
                         title: "Created Successfully",
                     }).then(() => {
                         pageClassrooms()
                     });
-                }, 500);
             } else {
-                setTimeout(() => {
-                    Swal.fire({
+                    await Swal.fire({
                         icon: "error",
                         title: "Create failed",
                         text: "Something went wrong!",
                     });
-                }, 500)
             }
         }
     }

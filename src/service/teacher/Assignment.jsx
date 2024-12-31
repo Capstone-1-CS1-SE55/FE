@@ -138,3 +138,20 @@ export const testScoring = async (assignmentList, assignmentId, studentId) => {
         return false;
     }
 }
+
+export const deleteAssignment = async (assignmentId) => {
+    const token = localStorage.getItem('token');
+    const header = {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        }
+    };
+    try {
+        await axios.delete(`http://localhost:8080/assignment/delete/${assignmentId}`, header);
+        return true;
+    }catch (e) {
+        console.log(e);
+        return false;
+    }
+}

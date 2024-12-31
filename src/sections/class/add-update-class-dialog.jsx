@@ -19,7 +19,7 @@ import Swal from "sweetalert2";
 import Class from "@/pages/dashboard/teacher/class.jsx";
 import {useNavigate} from "react-router-dom";
 
-export function AddUpdateClassDialog({open, handleClose, classroom}) {
+export function AddUpdateClassDialog({open, handleClose, classroom, pageClassrooms}) {
     const [show, setShow] = React.useState(false);
 
     const [className, setClassName] = useState('');
@@ -46,22 +46,18 @@ export function AddUpdateClassDialog({open, handleClose, classroom}) {
         handleClose();
 
         if (isSuccess) {
-            setTimeout(() => {
                 Swal.fire({
                     icon: "success",
                     title: "Updated Successfully",
                 }).then(() => {
-                    navigate(0);
+                    pageClassrooms()
                 });
-            }, 1000);
         } else {
-            setTimeout(() => {
-                Swal.fire({
+                await Swal.fire({
                     icon: "error",
                     title: "Update failed",
                     text: "Something went wrong!",
                 });
-            },1000)
         }
     };
 

@@ -16,10 +16,16 @@ import {useNavigate} from 'react-router-dom';
 import {pageClassroomsByTeacherId} from "@/service/teacher/Classroom.jsx";
 import {pageAssignmentOfTeacher} from "@/service/teacher/Practices.jsx";
 import moment from "moment";
+import {TrashIcon} from "@heroicons/react/24/solid/index.js";
+import {DeleteTestDialog} from "@/sections/practice/delete-test.jsx";
+import {DeletePracticeDialog} from "@/sections/practice/delete-practice-dialog.jsx";
+import {deleteAssignment} from "@/service/teacher/Assignment.jsx";
+import Swal from "sweetalert2";
 
 export default function PracticesList() {
     const navigate = useNavigate();
     const [open, setOpen] = React.useState(false);
+    const [dele, setDele] = useState(false);
 
     const [assignments, setAssignments] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
@@ -99,6 +105,34 @@ export default function PracticesList() {
                 </DialogBody>
             </Dialog>
         );
+    }
+    const [id, setId] = useState();
+    const [titles, setTitles] = useState();
+    const handleDelete = (assignmentId, title) => {
+        setDele(true);
+        setId(assignmentId);
+        setTitles(title);
+    }
+
+    const handleDeleteTest = async () => {
+        const isSuccess = await deleteAssignment(id);
+
+        setDele(false);
+
+        if (isSuccess) {
+            Swal.fire({
+                icon: "success",
+                title: "Deleted Successfully",
+            }).then(() => {
+                pageAssignments();
+            });
+        } else {
+            await Swal.fire({
+                icon: "error",
+                title: "Delete failed",
+                text: "Something went wrong!",
+            });
+        }
     }
 
     return (
@@ -192,11 +226,7 @@ export default function PracticesList() {
                                     }`;
 
                                     return (
-                                        <tr key={assignmentId} className="hover:opacity-70 cursor-pointer"
-                                            onClick={() => {
-                                                navigate(`/dashboard/practices/${assignmentId}`);
-                                            }}
-                                        >
+                                        <tr key={assignmentId} className="hover:opacity-70 cursor-pointer">
                                             {/*<th scope="col" className="p-4">*/}
                                             {/*    <div className="flex items-center">*/}
                                             {/*        <input*/}
@@ -209,12 +239,16 @@ export default function PracticesList() {
                                             {/*        </label>*/}
                                             {/*    </div>*/}
                                             {/*</th>*/}
-                                            <td className={className}>
+                                            <td className={className} >
                                                 <Typography variant="small" color="blue-gray" className="font-semibold">
                                                     {index + 1} {/* Hiển thị số thứ tự */}
                                                 </Typography>
                                             </td>
-                                            <td className={className}>
+                                            <td className={className}
+                                                onClick={() => {
+                                                    navigate(`/dashboard/practices/${assignmentId}`);
+                                                }}
+                                            >
                                                 <Typography variant="small" color="blue-gray" className="text-sm font-semibold">
                                                     {title}
                                                 </Typography>
@@ -265,6 +299,15 @@ export default function PracticesList() {
                                             {/*        <EyeIcon strokeWidth={2} className="h-5 w-5 text-inherit" />*/}
                                             {/*    </IconButton>*/}
                                             {/*</td>*/}
+                                            <td>
+                                                <IconButton
+                                                    variant="text"
+                                                    className="rounded-full"
+                                                    onClick={() => handleDelete(assignmentId, title)}
+                                                >
+                                                    <TrashIcon strokeWidth={2} className="h-5 w-5 text-red-600"/>
+                                                </IconButton>
+                                            </td>
                                         </tr>
                                     );
                                 }
@@ -294,7 +337,7 @@ export default function PracticesList() {
                 </Card>
             </div>
 
-            {/*<AddPracticeDialog open={open} handleClose={() => setOpen(false)}/>*/}
+            <DeleteTestDialog open={dele} handleClose={() => setDele(false)} handleDeleteTest={handleDeleteTest} title={titles}></DeleteTestDialog>
         </>
     );
 }

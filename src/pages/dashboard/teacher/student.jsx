@@ -127,7 +127,7 @@ export default function Student() {
     return (
         <>
             <div className="mt-12 flex items-center justify-between ">
-                <Button variant="outlined" className="flex items-center gap-3" onClick={() => navigate(-1)}>
+                <Button variant="outlined" className="flex items-center gap-3" onClick={() => navigate('/dashboard/class')}>
                     <ArrowLeftIcon className="w-5 h-5"/>
                     Back
                 </Button>
@@ -175,19 +175,20 @@ export default function Student() {
                     <table className="w-full min-w-[640px] table-auto">
                         <thead className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
                         <tr>
-                            <th scope="col" className="p-4">
-                                <div className="flex items-center">
-                                    <input
-                                        id="checkbox-all-search"
-                                        type="checkbox"
-                                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                                    />
-                                    <label htmlFor="checkbox-all-search" className="sr-only">
-                                        checkbox
-                                    </label>
-                                </div>
-                            </th>
+                            {/*<th scope="col" className="p-4">*/}
+                            {/*    <div className="flex items-center">*/}
+                            {/*        <input*/}
+                            {/*            id="checkbox-all-search"*/}
+                            {/*            type="checkbox"*/}
+                            {/*            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"*/}
+                            {/*        />*/}
+                            {/*        <label htmlFor="checkbox-all-search" className="sr-only">*/}
+                            {/*            checkbox*/}
+                            {/*        </label>*/}
+                            {/*    </div>*/}
+                            {/*</th>*/}
                             {[
+                                '',
                                 'STT',
                                 'student name',
                                 'email',
@@ -216,18 +217,21 @@ export default function Student() {
 
                             return (
                                 <tr key={student.email} className="hover:opacity-70 cursor-pointer">
-                                    <th scope="col" className="p-4">
-                                        <div className="flex items-center">
-                                            <input
-                                                id={`checkbox-${student.email}`}
-                                                type="checkbox"
-                                                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                                            />
-                                            <label htmlFor={`checkbox-${student.email}`} className="sr-only">
-                                                checkbox
-                                            </label>
-                                        </div>
-                                    </th>
+                                    {/*<th scope="col" className="p-4">*/}
+                                    {/*    <div className="flex items-center">*/}
+                                    {/*        <input*/}
+                                    {/*            id={`checkbox-${student.email}`}*/}
+                                    {/*            type="checkbox"*/}
+                                    {/*            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"*/}
+                                    {/*        />*/}
+                                    {/*        <label htmlFor={`checkbox-${student.email}`} className="sr-only">*/}
+                                    {/*            checkbox*/}
+                                    {/*        </label>*/}
+                                    {/*    </div>*/}
+                                    {/*</th>*/}
+                                    <td>
+                                        <p></p>
+                                    </td>
                                     <td className={className}>
                                         <Typography variant="small" color="blue-gray" className="font-semibold">
                                             {key + 1}
@@ -307,7 +311,7 @@ export default function Student() {
                 </CardFooter>
             </Card>
 
-            <DeleteStudentDialog open={dele} handleClose={() => setDele(false)} student={selectedStudent}/>
+            <DeleteStudentDialog open={dele} handleClose={() => setDele(false)} student={selectedStudent} pageStudentsInClassroom={pageStudentsInClassroom}/>
             <AddUpdateStudentDialog open={invite} handleClose={() => setInvite(false)} classroomStudent = {classroomStudent}/>
 
             <AddProductDialog open={view} handleClose={() => setView(false)} student={selectedStudent}/>

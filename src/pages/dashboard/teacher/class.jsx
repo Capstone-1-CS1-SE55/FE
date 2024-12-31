@@ -163,19 +163,19 @@ export default function Class() {
                         <table className="w-full min-w-[640px] table-auto">
                             <thead className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
                             <tr>
-                                <th scope="col" className="p-4">
-                                    <div className="flex items-center">
-                                        <input
-                                            id="checkbox-all-search"
-                                            type="checkbox"
-                                            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                                        />
-                                        <label htmlFor="checkbox-all-search" className="sr-only">
-                                            checkbox
-                                        </label>
-                                    </div>
-                                </th>
-                                {['stt', 'class name', 'number', 'created date', ''].map((el) => (
+                                {/*<th scope="col" className="p-4">*/}
+                                {/*    <div className="flex items-center">*/}
+                                {/*        <input*/}
+                                {/*            id="checkbox-all-search"*/}
+                                {/*            type="checkbox"*/}
+                                {/*            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"*/}
+                                {/*        />*/}
+                                {/*        <label htmlFor="checkbox-all-search" className="sr-only">*/}
+                                {/*            checkbox*/}
+                                {/*        </label>*/}
+                                {/*    </div>*/}
+                                {/*</th>*/}
+                                {['', 'stt', 'class name', 'number', 'created date', ''].map((el) => (
                                     <th key={el} className="border-b border-blue-gray-50 py-3 px-5 text-left">
                                         <Typography
                                             variant="small"
@@ -194,20 +194,23 @@ export default function Class() {
 
                                 return (
                                     <tr key={classroomName} className="hover:opacity-60 cursor-pointer"
-                                        onClick={() => handleSeen(classroom.classroomId)}
+
                                     >
-                                        <th scope="col" className="p-4">
-                                            <div className="flex items-center">
-                                                <input
-                                                    id={`checkbox-${index}`}
-                                                    type="checkbox"
-                                                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                                                />
-                                                <label htmlFor={`checkbox-${index}`} className="sr-only">
-                                                    checkbox
-                                                </label>
-                                            </div>
-                                        </th>
+                                        {/*<th scope="col" className="p-4">*/}
+                                        {/*    <div className="flex items-center">*/}
+                                        {/*        <input*/}
+                                        {/*            id={`checkbox-${index}`}*/}
+                                        {/*            type="checkbox"*/}
+                                        {/*            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"*/}
+                                        {/*        />*/}
+                                        {/*        <label htmlFor={`checkbox-${index}`} className="sr-only">*/}
+                                        {/*            checkbox*/}
+                                        {/*        </label>*/}
+                                        {/*    </div>*/}
+                                        {/*</th>*/}
+                                        <td>
+                                            <p></p>
+                                        </td>
                                         <td className={className}>
                                             <div className="flex items-center gap-4">
                                                 <Typography variant="small" color="blue-gray" className="font-bold">
@@ -215,7 +218,9 @@ export default function Class() {
                                                 </Typography>
                                             </div>
                                         </td>
-                                        <td className={className}>
+                                        <td className={className}
+                                            onClick={() => handleSeen(classroom.classroomId)}
+                                        >
                                             <div className="flex items-center gap-4">
                                                 <Typography variant="small" color="blue-gray" className="font-bold">
                                                     {classroomName}
@@ -288,8 +293,8 @@ export default function Class() {
                     </CardFooter>
                 </Card>
             </div>
-            <AddUpdateClassDialog open={open} handleClose={() => setOpen(false)} classroom={selectedClassroom}/>
-            <DeleteClassDialog open={dele} handleClose={() => setDele(false)} classroom={selectedClassroom}/>
+            <AddUpdateClassDialog open={open} handleClose={() => setOpen(false)} classroom={selectedClassroom} pageClassrooms={pageClassrooms}/>
+            <DeleteClassDialog open={dele} handleClose={() => setDele(false)} classroom={selectedClassroom} pageClassrooms={pageClassrooms}/>
             <AddClassDialog open={open2} handleClose={() => setOpen2(false)} pageClassrooms = {() => pageClassrooms()}></AddClassDialog>
         </>
     );

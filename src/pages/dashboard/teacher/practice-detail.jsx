@@ -505,6 +505,7 @@ export default function PracticeDetail() {
                             id="createdDate"
                             value={startDate1}
                             onChange={(e) => handleDateChange("startDate", e.target.value)}
+                            disabled={startDate < currentDate}
                             className="block w-full rounded-lg border border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm px-4 py-2 transition duration-200"
                         />
                         {errors[0]?.startDate && (
@@ -523,6 +524,7 @@ export default function PracticeDetail() {
                             type="datetime-local"
                             id="deadline"
                             value={dueDate}
+                            disabled={startDate < currentDate}
                             className="block w-full rounded-lg border border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm px-4 py-2 transition duration-200"
                             onChange={(e) => handleDateChange("dueDate", e.target.value)}
                         />
@@ -532,44 +534,53 @@ export default function PracticeDetail() {
                     </div>
                 </div>
 
-                <button className="bg-gray-200 text-gray-800 py-2 px-4 rounded-lg hover:bg-gray-300"
+                {!(startDate < currentDate) && (
+                    <button
+                        className="bg-gray-200 text-gray-800 py-2 px-4 rounded-lg hover:bg-gray-300"
                         onClick={(e) => {
                             e.preventDefault();
                             handleResetDates();
                         }}
-                >
-                    Reset date
-                </button>
-                {classId !== null ? (<p></p>) : (
-                <div>
-                    <h3 className="text-sm font-semibold text-gray-800 mb-2">
-                        Danh sách lớp ({selectedClassrooms.length}/{classrooms.length})
-                    </h3>
-                    {classrooms.length === 0 ? (
-                        <div className="text-gray-500 text-sm">Bạn chưa có lớp nào</div>
-                    ) : (
-                        <div className="grid grid-cols-2 gap-4 bg-white shadow-md pl-6 pr-6 pb-3 pt-3 rounded-lg">
-                            {classrooms.map((classItem) => (
-                                <label
-                                    key={classItem.classroomId}
-                                    className="flex items-center space-x-2 text-gray-700 text-sm"
-                                >
-                                    <input
-                                        type="checkbox"
-                                        value={classItem.classroomId}
-                                        checked={selectedClassrooms.some(
-                                            (item) => item.classroomId === classItem.classroomId
-                                        )}
-                                        onChange={(e) => handleCheckboxChange(classItem.classroomId, e.target.checked)}
-                                        className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                    />
-                                    <span>{classItem.classroomName}</span>
-                                </label>
-                            ))}
+                    >
+                        Reset date
+                    </button>
+                )}
+                {classId !== null ? (
+                    <p></p>
+                ) : (
+                    !(startDate < currentDate) && (
+                        <div>
+                            <h3 className="text-sm font-semibold text-gray-800 mb-2">
+                                Danh sách lớp ({selectedClassrooms.length}/{classrooms.length})
+                            </h3>
+                            {classrooms.length === 0 ? (
+                                <div className="text-gray-500 text-sm">Bạn chưa có lớp nào</div>
+                            ) : (
+                                <div className="grid grid-cols-2 gap-4 bg-white shadow-md pl-6 pr-6 pb-3 pt-3 rounded-lg">
+                                    {classrooms.map((classItem) => (
+                                        <label
+                                            key={classItem.classroomId}
+                                            className="flex items-center space-x-2 text-gray-700 text-sm"
+                                        >
+                                            <input
+                                                type="checkbox"
+                                                value={classItem.classroomId}
+                                                checked={selectedClassrooms.some(
+                                                    (item) => item.classroomId === classItem.classroomId
+                                                )}
+                                                onChange={(e) =>
+                                                    handleCheckboxChange(classItem.classroomId, e.target.checked)
+                                                }
+                                                className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                            />
+                                            <span>{classItem.classroomName}</span>
+                                        </label>
+                                    ))}
+                                </div>
+                            )}
                         </div>
-                    )}
-                </div>
-                    )}
+                    )
+                )}
                 <div className="flex flex-col items-end">
                     <button
                         type="submit"

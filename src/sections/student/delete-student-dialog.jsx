@@ -4,7 +4,7 @@ import {useNavigate} from "react-router-dom";
 import {deleteClassroom, deleteStudentFromClassroom} from "@/service/teacher/Classroom.jsx";
 import Swal from "sweetalert2";
 
-export function DeleteStudentDialog({ open, handleClose, student }) {
+export function DeleteStudentDialog({ open, handleClose, student, pageStudentsInClassroom }) {
 
     if (!student) {
         return (
@@ -31,22 +31,18 @@ export function DeleteStudentDialog({ open, handleClose, student }) {
         handleClose();
 
         if (isSuccess) {
-            setTimeout(() => {
                 Swal.fire({
                     icon: "success",
                     title: "Deleted Successfully",
                 }).then(() => {
-                    navigate(0);
+                    pageStudentsInClassroom()
                 });
-            }, 1000);
         } else {
-            setTimeout(() => {
-                Swal.fire({
+                await Swal.fire({
                     icon: "error",
                     title: "Delete failed",
                     text: "Something went wrong!",
                 });
-            },1000)
         }
     }
 
