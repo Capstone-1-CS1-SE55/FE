@@ -67,9 +67,9 @@ export function AddClassDialog({open, handleClose, pageClassrooms}) {
             console.log(newEmails)
             const updatedEmails = [...new Set([...email, ...newEmails])];
             setEmail(updatedEmails);
-
+            console.log("email: ",email)
             const emailString = updatedEmails.join(',');
-
+            console.log(emailString)
             const isSuccess = await addNewClass(className, encodeURIComponent(emailString))
 
             handleClose();

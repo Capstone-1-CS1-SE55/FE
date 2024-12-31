@@ -26,13 +26,23 @@ import {
   setOpenSidenav,
 } from "@/context";
 import {getUsernameFromToken} from "@/service/Token.jsx";
+import {useEffect, useState} from "react";
 
 export function DashboardNavbar() {
   const [controller, dispatch] = useMaterialTailwindController();
   const { fixedNavbar, openSidenav } = controller;
   const { pathname } = useLocation();
   const [layout, page] = pathname.split("/").filter((el) => el !== "");
-  const username = getUsernameFromToken();
+  const [username, setUsername] = useState();
+
+  useEffect(() => {
+    const handleUsername = async () => {
+      let temp = await getUsernameFromToken();
+      setUsername(temp);
+    }
+
+    handleUsername()
+  }, []);
   return (
     <Navbar
       color={fixedNavbar ? "white" : "transparent"}

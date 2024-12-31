@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const pageClassroomsByTeacherId = async (username, classroomName, page) => {
+export const pageClassroomsByTeacherId = async (classroomName, page) => {
     const token = localStorage.getItem('token')
     const header = {
         headers: {
@@ -9,7 +9,7 @@ export const pageClassroomsByTeacherId = async (username, classroomName, page) =
         },
     }
     try {
-        const response = await axios.get(`http://localhost:8080/classroom/page-get-all-classroom-of-teacher/${username}?page=${page}&classroomName=${classroomName}`, header);
+        const response = await axios.get(`http://localhost:8080/classroom/page-get-all-classroom-of-teacher?page=${page}&classroomName=${classroomName}`, header);
         return response.data;
     } catch (err) {
         console.log(err);
@@ -148,3 +148,9 @@ export const PageGetAllClassOfStudent = async (classroomName, page) => {
         console.log(e);
     }
 }
+
+
+
+
+
+

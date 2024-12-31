@@ -13,7 +13,7 @@ export const getAllQuestionsInAssignment = async (assignmentId, studentId) => {
         : `http://localhost:8080/assignment/questions/${assignmentId}`;
     try {
         const response = await axios.get(url, header);
-        console.log(response.data);
+        console.log('a', response.data);
         return response.data;
     } catch (e) {
         console.log(e);

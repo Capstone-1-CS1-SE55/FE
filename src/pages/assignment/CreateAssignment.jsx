@@ -7,10 +7,14 @@ import {CreateQuestion} from "@/pages/dashboard/teacher/practice-detail.jsx";
 import {addNewClass, listClassroomByTeacher} from "@/service/teacher/Classroom.jsx";
 import Swal from "sweetalert2";
 import {createNewAssignment} from "@/service/teacher/Assignment.jsx";
+import {DeletePracticeDialog} from "@/sections/practice/delete-practice-dialog.jsx";
+import {DeleteQuestionDialog} from "@/sections/practice/delete-question-dialog.jsx";
 
 function CreateAssignment() {
     const navigate = useNavigate();
     const [classrooms, setClassrooms] = useState([]);
+    const [dele, setDele] = React.useState(false);
+    const [question, setQuestion] = useState();
     const [createdAssignment, setCreatedAssignment] = useState({
         title: '',
         startDate: '',
@@ -25,6 +29,8 @@ function CreateAssignment() {
         classrooms: []
     })
 
+    console.log(createdAssignment)
+
     const [errors, setErrors] = useState({});
 
     const validate = (values) => {
@@ -38,6 +44,13 @@ function CreateAssignment() {
             errors.startDate = "Start date is required.";
         } else if (isNaN(new Date(values.startDate).getTime())) {
             errors.startDate = "Start date is invalid.";
+        } else {
+            const currentDate = new Date();
+            const startDate = new Date(values.startDate);
+
+            if (startDate < currentDate) {
+                errors.startDate = "Start date must be greater than current date.";
+            }
         }
 
         if (!values.dueDate) {
@@ -58,10 +71,12 @@ function CreateAssignment() {
                     qErrors.questionText = `Question text for question ${index + 1} is required.`;
                 }
 
-                if (!question.maxScore || isNaN(parseFloat(question.maxScore))) {
+                if (!question.maxScore) {
                     qErrors.maxScore = `Valid max score for question ${index + 1} is required.`;
                 } else if (parseFloat(question.maxScore) <= 0) {
                     qErrors.maxScore = `Max score for question ${index + 1} must be greater than 0.`;
+                } else if(isNaN(parseFloat(question.maxScore))) {
+                    qErrors.maxScore = `Valid max score for question ${index + 1} must be a number.`;
                 }
 
                 if (!question.correctAnswer) {
@@ -76,11 +91,11 @@ function CreateAssignment() {
             }
         }
 
-        if (!values.classrooms || values.classrooms.length === 0) {
-            errors.classrooms = "At least one classroom must be selected.";
-        } else if (!values.classrooms[0]?.classroomId) {
-            errors.classrooms = "Classroom ID is required for selected classrooms.";
-        }
+        // if (!values.classrooms || values.classrooms.length === 0) {
+        //     errors.classrooms = "At least one classroom must be selected.";
+        // } else if (!values.classrooms[0]?.classroomId) {
+        //     errors.classrooms = "Classroom ID is required for selected classrooms.";
+        // }
 
         return errors;
     };
@@ -134,9 +149,23 @@ function CreateAssignment() {
             return updatedErrors;
         });
     };
-
+    console.log(errors)
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const totalMaxScore = createdAssignment.questions.reduce((sum, question) => {
+            return sum + (parseFloat(question.maxScore) || 0);
+        }, 0);
+
+        if (totalMaxScore > 10) {
+            Swal.fire({
+                icon: "error",
+                title: "Invalid Max Score",
+                text: "The total max score of all questions must be less than or equal to 10.",
+            });
+            return;
+        }
+
         const validationErrors = validate(createdAssignment);
         setErrors(validationErrors);
 
@@ -148,7 +177,7 @@ function CreateAssignment() {
                         icon: "success",
                         title: "Created Successfully",
                     }).then(() => {
-                        navigate('/dashboard/tests')
+                        navigate('/dashboard/practices')
                     });
             } else {
                     await Swal.fire({
@@ -188,13 +217,13 @@ function CreateAssignment() {
             classrooms: updatedClassrooms,
         }));
 
-        setErrors((prev) => {
-            const updatedErrors = {...prev};
-            if (updatedClassrooms.length > 0) {
-                delete updatedErrors.classrooms;
-            }
-            return updatedErrors;
-        });
+        // setErrors((prev) => {
+        //     const updatedErrors = {...prev};
+        //     if (updatedClassrooms.length > 0) {
+        //         delete updatedErrors.classrooms;
+        //     }
+        //     return updatedErrors;
+        // });
     };
 
     const handleAddQuestion = () => {
@@ -207,19 +236,43 @@ function CreateAssignment() {
         }));
     };
     const handleDeleteQuestion = (index) => {
-        setCreatedAssignment((prev) => ({
-            ...prev,
-            questions: prev.questions.filter((_, idx) => idx !== index),
-        }));
+        const questionText = createdAssignment.questions[index]?.questionText;
+        if (questionText) {
+            setDele(true);
+            setQuestion(questionText)
+        } else {
+            setCreatedAssignment((prev) => ({
+                ...prev,
+                questions: prev.questions.filter((_, idx) => idx !== index),
+            }));
+        }
     };
 
-
+    const handleClickDelete = () => {
+        const updatedQuestions = createdAssignment.questions.filter(
+            (q) => q.questionText !== question
+        );
+        setCreatedAssignment((prev) => ({
+            ...prev,
+            questions: updatedQuestions,
+        }));
+        setQuestion(null);
+        setDele(false);
+    };
     const handleResetDates = () => {
         setCreatedAssignment((prev) => ({
             ...prev,
             startDate: "",
             dueDate: "",
         }));
+
+        if (errors.startDate || errors.dueDate) {
+            setErrors(prevErrors => ({
+                ...prevErrors,
+                startDate: "",
+                dueDate: ""
+            }));
+        }
     };
 
     return (
@@ -401,46 +454,52 @@ function CreateAssignment() {
                                     handleResetDates();
                                 }}
                         >
-                            Đặt lại
+                            Reset date
                         </button>
                         <div>
-                            <h3 className="text-sm font-semibold text-gray-800 mb-2">Danh sách lớp
-                                ({createdAssignment.classrooms.length}/{classrooms.length})</h3>
-                            <div className="grid grid-cols-2 gap-4 bg-white shadow-md p-6">
-                                {classrooms.map((classItem) => (
-                                    <label
-                                        key={classItem.classroomId}
-                                        className="flex items-center space-x-2 text-gray-700 text-sm"
-                                    >
-                                        <input
-                                            type="checkbox"
-                                            value={classItem.classroomId}
-                                            checked={createdAssignment.classrooms.some(
-                                                (item) => item.classroomId === classItem.classroomId
-                                            )}
-                                            onChange={() => handleCheckboxChange(classItem.classroomId)}
-                                            className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                        />
-                                        <span>{classItem.classroomName}</span>
-                                    </label>
-                                ))}
-
-                            </div>
-                            {errors.classrooms && (
-                                <span className="text-red-500 text-sm">{errors.classrooms}</span>
+                            <h3 className="text-sm font-semibold text-gray-800 mb-2">
+                                Danh sách lớp ({createdAssignment.classrooms.length}/{classrooms.length})
+                            </h3>
+                            {classrooms.length === 0 ? (
+                                <div className="text-gray-500 text-sm">Bạn chưa có lớp nào</div>
+                            ) : (
+                                <div className="grid grid-cols-2 gap-4 bg-white shadow-md pl-6 pr-6 pb-3 pt-3">
+                                    {classrooms.map((classItem) => (
+                                        <label
+                                            key={classItem.classroomId}
+                                            className="flex items-center space-x-2 text-gray-700 text-sm"
+                                        >
+                                            <input
+                                                type="checkbox"
+                                                value={classItem.classroomId}
+                                                checked={createdAssignment.classrooms.some(
+                                                    (item) => item.classroomId === classItem.classroomId
+                                                )}
+                                                onChange={() => handleCheckboxChange(classItem.classroomId)}
+                                                className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                            />
+                                            <span>{classItem.classroomName}</span>
+                                        </label>
+                                    ))}
+                                </div>
                             )}
+                            {/*{errors.classrooms && (*/}
+                            {/*    <span className="text-red-500 text-sm">{errors.classrooms}</span>*/}
+                            {/*)}*/}
                         </div>
                         <div className="flex flex-col items-end">
                             <button
                                 className="bg-blue-600 text-white mb-1 px-4 py-2 rounded-full shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                                 onClick={handleSubmit}
                             >
-                                Lưu
+                                Save
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
+            <DeleteQuestionDialog open={dele} handleClose={() => setDele(false)} assignment={question}
+                                  handleClickDelete={handleClickDelete}/>
         </>
     );
 }

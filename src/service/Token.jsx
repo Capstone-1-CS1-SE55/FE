@@ -2,19 +2,19 @@ import {jwtDecode} from "jwt-decode";
 import axios from "axios";
 
 const token = localStorage.getItem('token');
-export const getUsernameFromToken = () => {
-    if (token) {
-        try {
-            const decodedToken = jwtDecode(token);
-            const username = decodedToken.sub;
-            return username;
-        } catch (error) {
-            console.error("Invalid token:", error);
-            return null;
+export const getUsernameFromToken = async () => {
+    const token2 = localStorage.getItem('token');
+    const header = {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token2}`
         }
-    } else {
-        console.warn("No token found");
-        return null;
+    };
+    try {
+        const response = await axios.get('http://localhost:8080/user/myInfo', header);
+        return response.data.result.username;
+    } catch (e) {
+        console.log(e);
     }
 };
 

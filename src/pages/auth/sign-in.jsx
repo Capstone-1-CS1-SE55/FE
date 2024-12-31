@@ -1,5 +1,5 @@
 import {Card, Input, Checkbox, Button, Typography} from '@material-tailwind/react';
-import {Link, useNavigate} from 'react-router-dom';
+import {Link, NavLink, useNavigate} from 'react-router-dom';
 import {useState} from "react";
 import {login} from "@/service/Account.jsx";
 
@@ -125,7 +125,7 @@ export function SignIn() {
                         {/*  containerProps={{ className: '-ml-2.5' }}*/}
                         {/*/>*/}
                         <Typography variant="small" className="font-medium text-gray-900">
-                            <a href="#">Forgot Password</a>
+                            <NavLink to="/auth/sign-up">Create new account</NavLink>
                         </Typography>
                     </div>
                     <div className="space-y-4 mt-8">

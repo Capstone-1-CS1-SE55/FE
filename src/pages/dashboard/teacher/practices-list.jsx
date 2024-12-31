@@ -148,18 +148,18 @@ export default function PracticesList() {
                         <table className="w-full min-w-[640px] table-auto">
                             <thead className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
                             <tr>
-                                <th scope="col" className="p-4">
-                                    <div className="flex items-center">
-                                        <input
-                                            id="checkbox-all-search"
-                                            type="checkbox"
-                                            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                                        />
-                                        <label htmlFor="checkbox-all-search" className="sr-only">
-                                            checkbox
-                                        </label>
-                                    </div>
-                                </th>
+                                {/*<th scope="col" className="p-4">*/}
+                                {/*    <div className="flex items-center">*/}
+                                {/*        <input*/}
+                                {/*            id="checkbox-all-search"*/}
+                                {/*            type="checkbox"*/}
+                                {/*            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"*/}
+                                {/*        />*/}
+                                {/*        <label htmlFor="checkbox-all-search" className="sr-only">*/}
+                                {/*            checkbox*/}
+                                {/*        </label>*/}
+                                {/*    </div>*/}
+                                {/*</th>*/}
                                 <th className="border-b border-blue-gray-50 py-3 px-5 text-left">
                                     <Typography variant="small" className="text-[11px] font-bold uppercase text-blue-gray-400">
                                         STT
@@ -167,6 +167,7 @@ export default function PracticesList() {
                                 </th>
                                 {[
                                     'practice name',
+                                    'creat date',
                                     'start date',
                                     'end date',
                                     'Class',
@@ -183,7 +184,7 @@ export default function PracticesList() {
                             <tbody>
                             {assignments.map(
                                 (
-                                    { title, createdDate, dueDate, classroomName, assignmentId },
+                                    { title, createdDate, dueDate, startDate, classroomName, assignmentId },
                                     index
                                 ) => {
                                     const className = `py-3 px-5 ${
@@ -191,29 +192,30 @@ export default function PracticesList() {
                                     }`;
 
                                     return (
-                                        <tr key={assignmentId} className="hover:opacity-70 cursor-pointer">
-                                            <th scope="col" className="p-4">
-                                                <div className="flex items-center">
-                                                    <input
-                                                        id={`checkbox-${index}`}
-                                                        type="checkbox"
-                                                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                                                    />
-                                                    <label htmlFor={`checkbox-${index}`} className="sr-only">
-                                                        checkbox
-                                                    </label>
-                                                </div>
-                                            </th>
+                                        <tr key={assignmentId} className="hover:opacity-70 cursor-pointer"
+                                            onClick={() => {
+                                                navigate(`/dashboard/practices/${assignmentId}`);
+                                            }}
+                                        >
+                                            {/*<th scope="col" className="p-4">*/}
+                                            {/*    <div className="flex items-center">*/}
+                                            {/*        <input*/}
+                                            {/*            id={`checkbox-${index}`}*/}
+                                            {/*            type="checkbox"*/}
+                                            {/*            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"*/}
+                                            {/*        />*/}
+                                            {/*        <label htmlFor={`checkbox-${index}`} className="sr-only">*/}
+                                            {/*            checkbox*/}
+                                            {/*        </label>*/}
+                                            {/*    </div>*/}
+                                            {/*</th>*/}
                                             <td className={className}>
                                                 <Typography variant="small" color="blue-gray" className="font-semibold">
                                                     {index + 1} {/* Hiển thị số thứ tự */}
                                                 </Typography>
                                             </td>
                                             <td className={className}>
-                                                <Typography variant="small" color="blue-gray" className="text-xl font-semibold"
-                                                            onClick={() => {
-                                                                navigate(`/dashboard/tests/${assignmentId}`);
-                                                            }}>
+                                                <Typography variant="small" color="blue-gray" className="text-sm font-semibold">
                                                     {title}
                                                 </Typography>
                                             </td>
@@ -228,18 +230,23 @@ export default function PracticesList() {
                                             {/*</td>*/}
                                             <td className={className}>
                                                 <Typography className="text-sm font-semibold text-blue-gray-600">
-                                                    {moment(createdDate).format("DD/MM/yyyy")}
+                                                    {moment(createdDate).format('DD/MM/YYYY - h:mm A')}
                                                 </Typography>
                                             </td>
                                             <td className={className}>
                                                 <Typography className="text-sm font-semibold text-blue-gray-600">
-                                                    {moment(dueDate).format("DD/MM/yyyy")}
+                                                    {moment(startDate).format('DD/MM/YYYY - h:mm A')}
+                                                </Typography>
+                                            </td>
+                                            <td className={className}>
+                                                <Typography className="text-sm font-semibold text-blue-gray-600">
+                                                    {moment(dueDate).format('DD/MM/YYYY - h:mm A')}
                                                 </Typography>
                                             </td>
                                             <td className={className}>
                                                 <Typography className="text-sm font-semibold text-blue-gray-600">
                                                     {/*{`${participants} students`}*/}
-                                                    {classroomName}
+                                                    {classroomName ? classroomName : "No Class"}
                                                 </Typography>
                                             </td>
                                             {/*<td className={className}>*/}
@@ -247,17 +254,17 @@ export default function PracticesList() {
                                             {/*        {`${numberOfQuestions} questions`}*/}
                                             {/*    </Typography>*/}
                                             {/*</td>*/}
-                                            <td className={className}>
-                                                <IconButton
-                                                    variant="text"
-                                                    className="rounded-full"
-                                                    onClick={() => {
-                                                        navigate(`/dashboard/tests/${assignmentId}`);
-                                                    }}
-                                                >
-                                                    <EyeIcon strokeWidth={2} className="h-5 w-5 text-inherit" />
-                                                </IconButton>
-                                            </td>
+                                            {/*<td className={className}>*/}
+                                            {/*    <IconButton*/}
+                                            {/*        variant="text"*/}
+                                            {/*        className="rounded-full"*/}
+                                            {/*        onClick={() => {*/}
+                                            {/*            navigate(`/dashboard/tests/${assignmentId}`);*/}
+                                            {/*        }}*/}
+                                            {/*    >*/}
+                                            {/*        <EyeIcon strokeWidth={2} className="h-5 w-5 text-inherit" />*/}
+                                            {/*    </IconButton>*/}
+                                            {/*</td>*/}
                                         </tr>
                                     );
                                 }

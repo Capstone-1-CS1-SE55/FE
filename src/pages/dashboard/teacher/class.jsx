@@ -28,6 +28,7 @@ import ReactPaginate from "react-paginate";
 import {pageClassroomsByTeacherId} from "@/service/teacher/Classroom.jsx";
 import {getUsernameFromToken} from "@/service/Token.jsx";
 import {AddClassDialog} from "@/sections/class/add-class-dialog.jsx";
+import moment from "moment";
 
 export default function Class() {
     const [open, setOpen] = React.useState(false);
@@ -52,13 +53,11 @@ export default function Class() {
     const [totalPages, setTotalPages] = useState(0);
     const [classroomName, setClassroomName] = useState('');
 
-    const username = getUsernameFromToken();
-
     useEffect(() => {
         pageClassrooms();
     }, [currentPage, classroomName]);
     const pageClassrooms = async () => {
-        const data = await pageClassroomsByTeacherId(username, classroomName, currentPage);
+        const data = await pageClassroomsByTeacherId(classroomName, currentPage);
         setClassrooms(data.content);
         setTotalPages(data.totalPages);
     }
@@ -194,7 +193,9 @@ export default function Class() {
                                 const className = `py-3 px-5 ${index === classrooms.length - 1 ? '' : 'border-b border-blue-gray-50'}`;
 
                                 return (
-                                    <tr key={classroomName} className="hover:opacity-60 cursor-pointer">
+                                    <tr key={classroomName} className="hover:opacity-60 cursor-pointer"
+                                        onClick={() => handleSeen(classroom.classroomId)}
+                                    >
                                         <th scope="col" className="p-4">
                                             <div className="flex items-center">
                                                 <input
@@ -216,8 +217,7 @@ export default function Class() {
                                         </td>
                                         <td className={className}>
                                             <div className="flex items-center gap-4">
-                                                <Typography variant="small" color="blue-gray" className="font-bold"
-                                                            onClick={() => handleSeen(classroom.classroomId)}>
+                                                <Typography variant="small" color="blue-gray" className="font-bold">
                                                     {classroomName}
                                                 </Typography>
                                             </div>
@@ -235,7 +235,7 @@ export default function Class() {
                                                 variant="small"
                                                 className="text-xs font-medium text-blue-gray-600"
                                             >
-                                                {createdDate}
+                                                {moment(createdDate).format("DD/MM/yyyy")}
                                             </Typography>
                                         </td>
                                         <td className={`${className} min-w-[110px] max-w-[120px]`}>

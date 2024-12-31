@@ -1,36 +1,15 @@
-// import ClockCounter from '@/common/ClockCounter';
-import {statisticsChartsData} from '@/data';
-import {ConfirmSubmitDialog} from '@/sections/practice/confirm-submit-dialog';
-import {
-    ChatBubbleBottomCenterTextIcon,
-    EllipsisVerticalIcon,
-    TrashIcon,
-} from '@heroicons/react/24/solid';
-import {
-    Button,
-    Card,
-    CardBody, CardFooter, CardHeader, Chip,
-    IconButton,
-    Input,
-    Menu,
-    MenuHandler,
-    MenuItem,
-    MenuList,
-    Textarea,
-    Typography,
-} from '@material-tailwind/react';
-import React, {useEffect, useState} from 'react';
-import Chart from 'react-apexcharts';
-import {useNavigate} from 'react-router-dom';
-import {getClassroomWithStudents} from "@/service/student/ClassStudent.jsx";
+import {useNavigate, useParams} from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {pageGetAssignmentOfClass} from "@/service/student/ClassStudent.jsx";
+import {Button, Card, CardBody, CardFooter, CardHeader, Chip, Typography} from "@material-tailwind/react";
 import {ArrowLeftIcon} from "@heroicons/react/24/solid/index.js";
 import moment from "moment/moment.js";
-import {pageGetAllAssignmentOfStudent} from "@/service/teacher/Assignment.jsx";
 
-export default function PracticeDetail() {
+export default function PracticeInClass() {
+    const {classId} = useParams();
     const navigate = useNavigate();
 
-    const [assignment, setAssignment] = useState([]);
+    const [assignments, setAssignments] = useState([]);
     const [currentPageAssignment, setCurrentPageAssignment] = useState(0);
     const [totalPagesAssignment, setTotalPagesAssignment] = useState(0);
 
@@ -38,8 +17,8 @@ export default function PracticeDetail() {
         pageAssignments();
     }, [currentPageAssignment]);
     const pageAssignments = async () => {
-        const data = await pageGetAllAssignmentOfStudent(currentPageAssignment);
-        setAssignment(data.content);
+        const data = await pageGetAssignmentOfClass(classId, currentPageAssignment);
+        setAssignments(data.content);
         setTotalPagesAssignment(data.totalPages);
     }
     const handlePageChangeAssignment = (page) => {
@@ -89,6 +68,13 @@ export default function PracticeDetail() {
 
     return (
         <>
+            <div className="mt-12 flex items-center gap-5">
+                <Button variant="outlined" className="flex items-center gap-1" onClick={() => navigate(`/dashboard/class/${classId}`)}>
+                    <ArrowLeftIcon className="w-5 h-4"/>
+                    Back
+                </Button>
+            </div>
+
             <div className="mt-12">
                 <Card className="mt-8">
                     <CardHeader variant="gradient" color="gray" className="mb-8 p-6">
@@ -100,7 +86,7 @@ export default function PracticeDetail() {
                         <table className="w-full min-w-[640px] table-auto">
                             <thead className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
                             <tr>
-                                {['stt', 'practice name', 'class', 'status', 'start date', 'end date', 'score'].map((el) => (
+                                {['stt', 'practice name', 'status', 'start date', 'end date', 'score'].map((el) => (
                                     <th key={el} className="border-b border-blue-gray-50 py-3 px-5 text-left">
                                         <Typography
                                             variant="small"
@@ -113,11 +99,10 @@ export default function PracticeDetail() {
                             </tr>
                             </thead>
                             <tbody>
-                            {assignment.map(({title, classroomName, startDate, dueDate, assignmentId, status, grade}, key) => {
+                            {assignments.map(({title, startDate, dueDate, assignmentId, status, grade}, key) => {
                                 const className = `py-3 px-5 ${
-                                    key === assignment.length - 1 ? '' : 'border-b border-blue-gray-50'
+                                    key === assignments.length - 1 ? '' : 'border-b border-blue-gray-50'
                                 }`;
-
                                 return (
                                     <tr
                                         key={key}
@@ -140,12 +125,6 @@ export default function PracticeDetail() {
                                         <td className={className}>
                                             <Typography className="text-sm font-semibold text-blue-gray-600 pl-[6px]">
                                                 {title}
-                                            </Typography>
-                                        </td>
-
-                                        <td className={className}>
-                                            <Typography className="text-sm font-semibold text-blue-gray-600 pl-[6px]">
-                                                {classroomName}
                                             </Typography>
                                         </td>
 

@@ -23,6 +23,7 @@ import {
 import React, {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import {pageClassroomsByTeacherId, PageGetAllClassOfStudent} from "@/service/teacher/Classroom.jsx";
+import moment from "moment";
 
 export default function Class() {
     const [open, setOpen] = React.useState(false);
@@ -49,7 +50,6 @@ export default function Class() {
             classroom.classroomName.toLowerCase().includes(classroomName.toLowerCase())
         );
     };
-
     const handleClassroomNameChange = (event) => {
         setClassroomName(event.target.value);
         setCurrentPage(0);
@@ -146,8 +146,8 @@ export default function Class() {
                                 {[
                                     'stt',
                                     'class name',
-                                    'number',
                                     'teacher name',
+                                    'number',
                                     'start date',
                                     'total practice',
                                 ].map((el) => (
@@ -195,14 +195,6 @@ export default function Class() {
                                                     variant="small"
                                                     className="text-xs font-medium text-blue-gray-600"
                                                 >
-                                                    {`${quantity} members`}
-                                                </Typography>
-                                            </td>
-                                            <td className={className}>
-                                                <Typography
-                                                    variant="small"
-                                                    className="text-xs font-medium text-blue-gray-600"
-                                                >
                                                     {teacherName}
                                                 </Typography>
                                             </td>
@@ -211,7 +203,15 @@ export default function Class() {
                                                     variant="small"
                                                     className="text-xs font-medium text-blue-gray-600"
                                                 >
-                                                    {createdDate}
+                                                    {`${quantity} members`}
+                                                </Typography>
+                                            </td>
+                                            <td className={className}>
+                                                <Typography
+                                                    variant="small"
+                                                    className="text-xs font-medium text-blue-gray-600"
+                                                >
+                                                    {moment(createdDate).format("DD/MM/yyyy")}
                                                 </Typography>
                                             </td>
                                             <td className={className}>
